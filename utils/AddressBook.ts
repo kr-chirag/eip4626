@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import { network } from 'hardhat';
 
-type TAddressType = "Vault"
+type TAddressType = "Vault" | "AssetToken"
 
 class AddressBook {
   static dir = "./deployments/"
