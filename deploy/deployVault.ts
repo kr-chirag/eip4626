@@ -4,7 +4,7 @@ import {ethers} from 'hardhat';
 import AddressBook from '../utils/AddressBook';
 
 const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  console.log("deploying vault...");
+  console.log("deploying Vault ...");
   const VaultFactory = await ethers.getContractFactory("Vault");
   const Vault = await VaultFactory.deploy();
   await Vault.waitForDeployment();
@@ -13,6 +13,5 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
 };
 
 deployFunction.tags = ["Vault"]
-deployFunction.dependencies = ["AssetToken"]
 
 export default deployFunction;
