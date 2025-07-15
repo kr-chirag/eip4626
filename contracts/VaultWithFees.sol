@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./AssetToken.sol";
 
 /// @dev ERC-4626 vault with entry/exit fees expressed in https://en.wikipedia.org/wiki/Basis_point[basis point (bp)].
 ///
@@ -22,11 +23,13 @@ contract VaultWithFees is ERC4626, Ownable {
     uint256 public exitFees = 1000;
     address public feeRecipient = address(this);
 
-    constructor(
-        IERC20 asset_,
-        string memory name_,
-        string memory symbol_
-    ) ERC4626(asset_) ERC20(name_, symbol_) Ownable(msg.sender) {}
+    AssetToken private _asset = new AssetToken("Asset Token", "ATK");
+
+    constructor()
+        ERC4626(IERC20(address(_asset)))
+        ERC20("Vault Token", "VTK")
+        Ownable(msg.sender)
+    {}
 
     function configureFees(
         uint256 entryFees_,

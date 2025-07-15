@@ -2,11 +2,11 @@
 pragma solidity ^0.8.28;
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
+import "./AssetToken.sol";
 
 contract Vault is ERC4626 {
-    constructor(
-        IERC20 asset_,
-        string memory name_,
-        string memory symbol_
-    ) ERC4626(asset_) ERC20(name_, symbol_) {}
+
+    AssetToken private _asset = new AssetToken("Asset Token", "ATK");
+
+    constructor() ERC4626(IERC20(address(_asset))) ERC20("Vault Token", "VTK") {}
 }

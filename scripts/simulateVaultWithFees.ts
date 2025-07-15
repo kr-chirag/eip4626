@@ -1,4 +1,4 @@
-import { ethers, network } from "hardhat";
+import { ethers } from "hardhat";
 import { Vault__factory, AssetToken__factory } from "../typechain-types"
 import AddressBook from "../utils/AddressBook"
 
