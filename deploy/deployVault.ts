@@ -6,7 +6,7 @@ import AddressBook from '../utils/AddressBook';
 const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log("deploying vault...");
   const VaultFactory = await ethers.getContractFactory("Vault");
-  const Vault = await VaultFactory.deploy(AddressBook.get("AssetToken"), "vCSP", "vCSP");
+  const Vault = await VaultFactory.deploy(AddressBook.get("AssetToken"), "vATK", "vATK");
   await Vault.waitForDeployment();
   AddressBook.set("Vault", await Vault.getAddress())
   console.log("🚀 ~ Vault address:", AddressBook.get("Vault"))
