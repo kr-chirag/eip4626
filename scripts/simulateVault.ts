@@ -29,16 +29,16 @@ async function simulate() {
   await (await tokenU2.approve(vaultAddress, pa("1000"))).wait();
   await printState();
 
-  await waitForEnter("user1 deposits 100 asset tokens");
-  await (await vaultU1.deposit(pa("100"), user1.address)).wait()
+  await waitForEnter("user1 deposits 110 asset tokens");
+  await (await vaultU1.deposit(pa("110"), user1.address)).wait()
   await printState();
 
   await waitForEnter("generating yeid of 100 tokens");
   await (await tokenU1.mint(vaultAddress, pa("100"))).wait();
   await printState();
 
-  await waitForEnter("user2 deposits 50 asset tokens")
-  await (await vaultU2.deposit(pa("50"), user2.address)).wait()
+  await waitForEnter("user2 deposits 55 asset tokens")
+  await (await vaultU2.deposit(pa("55"), user2.address)).wait()
   await printState();
 
   await waitForEnter("generating yeid of 250 tokens");
@@ -62,6 +62,7 @@ async function simulate() {
       "user1 shares": fs(await vaultU1.balanceOf(user1.address)),
       "user2 assets": fa(await tokenU2.balanceOf(user2.address)),
       "user2 shares": fs(await vaultU1.balanceOf(user2.address)),
+      "feeRecipient assets": fa(await tokenU1.balanceOf(await vaultU1.feeRecipient())),
     }
     console.table(Object.entries(state).map(([key, value]) => ({ Property: key, Value: value })));
   }
