@@ -6,7 +6,14 @@ import "./AssetToken.sol";
 
 contract Vault is ERC4626 {
 
-    AssetToken private _asset = new AssetToken("Asset Token", "ATK");
+    AssetToken private __asset = new AssetToken("Asset Token", "ATK");
+    uint8 private __decimalsOffset = 0;
 
-    constructor() ERC4626(IERC20(address(_asset))) ERC20("Vault Token", "VTK") {}
+    constructor(uint8 decimalsOffset_) ERC4626(IERC20(address(__asset))) ERC20("Vault Token", "VTK") {
+        __decimalsOffset = decimalsOffset_;
+    }
+
+    function _decimalsOffset() internal view override returns (uint8) {
+        return __decimalsOffset;
+    }
 }
