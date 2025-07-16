@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "./AssetToken.sol";
 
 /// @dev ERC-4626 vault with entry/exit fees expressed in https://en.wikipedia.org/wiki/Basis_point[basis point (bp)].
@@ -15,7 +17,7 @@ import "./AssetToken.sol";
 /// redeemed. This is an opinionated design decision that should be taken into account when integrating this contract.
 ///
 /// WARNING: This contract has not been audited and shouldn't be considered production ready. Consider using it with caution.
-contract Vault is ERC4626, Ownable {
+contract Vault is ERC20, ERC20Permit, ERC4626, Ownable {
     using Math for uint256;
 
     uint8 public immutable DECIMALS_OFFSET = 0;
@@ -28,8 +30,9 @@ contract Vault is ERC4626, Ownable {
     AssetToken private _asset = new AssetToken("Asset Token", "ATK");
 
     constructor(uint8 decimalsOffset_)
-        ERC4626(IERC20(address(_asset)))
         ERC20("Vault Token", "VTK")
+        ERC20Permit("Vault Token")
+        ERC4626(IERC20(address(_asset)))
         Ownable(msg.sender)
     {
         DECIMALS_OFFSET = decimalsOffset_;
@@ -123,5 +126,9 @@ contract Vault is ERC4626, Ownable {
     /// Used in {IERC4626-deposit} and {IERC4626-redeem} operations.
     function _feeOnTotal(uint256 assets, uint256 feeBasisPoints) private pure returns (uint256) {
         return assets.mulDiv(feeBasisPoints, feeBasisPoints + _BASIS_POINT_SCALE, Math.Rounding.Ceil);
+    }
+
+    function decimals() public view virtual override(ERC20, ERC4626) returns (uint8) {
+        return super.decimals();
     }
 }

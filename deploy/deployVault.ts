@@ -5,7 +5,7 @@ import AddressBook from '../utils/AddressBook';
 
 const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
-  const DECIMALS_OFFSET = 0;
+  const DECIMALS_OFFSET = 4;
 
   console.log("deploying Vault ...");
   const VaultFactory = await ethers.getContractFactory("Vault");
